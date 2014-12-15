@@ -540,6 +540,8 @@ func (kl *Kubelet) runContainer(pod *api.BoundPod, container *api.Container, pod
 		Binds:        binds,
 		NetworkMode:  netMode,
 		Privileged:   privileged,
+		CapAdd:       container.CapAdd,
+		CapDrop:      container.CapDrop,
 	})
 	if err != nil {
 		if ref != nil {

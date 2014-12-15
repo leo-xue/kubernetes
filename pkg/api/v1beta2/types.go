@@ -230,6 +230,9 @@ type Container struct {
 	Privileged bool `json:"privileged,omitempty" description:"whether or not the container is granted privileged status; defaults to false"`
 	// Optional: Policy for pulling images for this container
 	ImagePullPolicy PullPolicy `json:"imagePullPolicy" description:"image pull policy; one of PullAlways, PullNever, PullIfNotPresent; defaults to PullAlways if :latest tag is specified, or PullIfNotPresent otherwise"`
+	// Optional: Capabilities for container.
+	CapAdd  []string `json:"capAdd,omitempty" description:"capabilities added for the container"`
+	CapDrop []string `json:"capDrop,omitempty" description:"capabilities droped for the container"`
 }
 
 // Handler defines a specific action that should be taken
