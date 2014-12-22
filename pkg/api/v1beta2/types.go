@@ -204,6 +204,16 @@ const (
 	PullIfNotPresent PullPolicy = "PullIfNotPresent"
 )
 
+type CapabilityType string
+
+// Capabilities represent POSIX capabilities that can be added or removed to a running container.
+type Capabilities struct{
+	// Added capabilities
+	Add []CapabilityType `json:"add,omitempty"`
+	// Removed capabilities
+	Drop []CapabilityType `json:"drop,omitempty"`
+}
+
 // Container represents a single container that is expected to be run on the host.
 type Container struct {
 	// Required: This must be a DNS_LABEL.  Each container in a pod must
@@ -231,8 +241,7 @@ type Container struct {
 	// Optional: Policy for pulling images for this container
 	ImagePullPolicy PullPolicy `json:"imagePullPolicy" description:"image pull policy; one of PullAlways, PullNever, PullIfNotPresent; defaults to PullAlways if :latest tag is specified, or PullIfNotPresent otherwise"`
 	// Optional: Capabilities for container.
-	CapAdd  []string `json:"capAdd,omitempty" description:"capabilities added for the container"`
-	CapDrop []string `json:"capDrop,omitempty" description:"capabilities droped for the container"`
+	Capabilities Capabilities `json:"capabilities,omitempty" description:" capabilities for container"`
 }
 
 // Handler defines a specific action that should be taken

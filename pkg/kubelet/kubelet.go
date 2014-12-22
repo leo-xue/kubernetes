@@ -373,6 +373,20 @@ func milliCPUToShares(milliCPU int) int {
 	return shares
 }
 
+func makeCapabilites(capAdd []api.CapabilityType, capDrop []api.CapabilityType) ([]string, []string) {
+	var(
+		addCaps	 []string
+		dropCaps []string
+	)
+	for _, cap := range capAdd {
+		addCaps = append(addCaps, string(cap))
+	}
+	for _, cap := range capDrop {
+		dropCaps = append(dropCaps, string(cap))
+	}
+	return addCaps, dropCaps
+}
+
 func (kl *Kubelet) mountExternalVolumes(pod *api.BoundPod) (volumeMap, error) {
 	podVolumes := make(volumeMap)
 	for _, vol := range pod.Spec.Volumes {
@@ -535,13 +549,15 @@ func (kl *Kubelet) runContainer(pod *api.BoundPod, container *api.Container, pod
 	} else if container.Privileged {
 		return "", fmt.Errorf("container requested privileged mode, but it is disallowed globally.")
 	}
+
+	capAdd, capDrop := makeCapabilites(container.Capabilities.Add, container.Capabilities.Drop)
 	err = kl.dockerClient.StartContainer(dockerContainer.ID, &docker.HostConfig{
 		PortBindings: portBindings,
 		Binds:        binds,
 		NetworkMode:  netMode,
 		Privileged:   privileged,
-		CapAdd:       container.CapAdd,
-		CapDrop:      container.CapDrop,
+		CapAdd:       capAdd,
+		CapDrop:      capDrop,
 	})
 	if err != nil {
 		if ref != nil {
