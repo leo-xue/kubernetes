@@ -374,8 +374,8 @@ func milliCPUToShares(milliCPU int) int {
 }
 
 func makeCapabilites(capAdd []api.CapabilityType, capDrop []api.CapabilityType) ([]string, []string) {
-	var(
-		addCaps	 []string
+	var (
+		addCaps  []string
 		dropCaps []string
 	)
 	for _, cap := range capAdd {

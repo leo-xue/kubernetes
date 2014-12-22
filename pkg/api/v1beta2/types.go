@@ -207,7 +207,7 @@ const (
 type CapabilityType string
 
 // Capabilities represent POSIX capabilities that can be added or removed to a running container.
-type Capabilities struct{
+type Capabilities struct {
 	// Added capabilities
 	Add []CapabilityType `json:"add,omitempty"`
 	// Removed capabilities
